@@ -1,0 +1,48 @@
+
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<html class = "ui-mobile-rendering">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<link rel="stylesheet" href="../../quickforms/css/quickforms/quickforms.css" />
+	<script src = "../../quickforms/js/require.min.js" ></script>
+</head>
+<body>
+<div data-role="page" id="loadQuickformsTemplate">
+	<script type="text/javascript">
+	require(['../../quickforms/js/quickforms.js'],function(){
+			quickforms.registerReadyFunction(function()
+			{
+				var domain = getParameterByName('domain');
+				$('form h1').html('RPP Domain Category Report: '+domain);
+				require(['dom/navControl','dom/report/table','dom/filterControl',
+						'dom/form/date','dom/form/select'],
+					function(){
+						quickforms.loadNav('nav.html','nav');
+						quickforms.loadNav('reportNav.html','reportNav');
+						quickforms.loadFilter('filter.html','mainData');
+						var username = getCookie('username');
+						quickforms.loadTableReport(//appName*, queryName, crossTabs*, parameterList*, callback*
+							{queryName:'domainCategoryReport',
+							configFile: 'js/domainCategoryTable',
+							parameterList:'diagnosisDomain='+domain+',addedBy='+username,
+							whereclause: 'diagnosisDomain=\''+domain+'\''});
+					});
+			});
+		});
+	</script>
+	<div data-role="header"><h1>RPP</h1></div>
+	<div id = "nav"></div>
+	<div data-role="content">
+		<form id="tableTemplate">
+			<h1 align = "center">RPP Domain Category Report: </h1>
+			<div id = "reportNav"></div>
+			
+			<table id ="mainData"></table>
+			
+
+		</form>
+	</div>
+	<div data-role="footer"><h1>.</h1></div>
+</div>
+</body>
+</html>
